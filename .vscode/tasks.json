@@ -1,0 +1,58 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "conan_install",
+      "type": "shell",
+      "command": "conan",
+      "args": [
+        "install",
+        "${workspaceFolder}",
+        "--build=missing",
+        "--output-folder",
+        "${workspaceFolder}/build",
+        "--profile",
+        "default"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "cmake",
+
+      "args": [
+        "..",
+        "-DCMAKE_BUILD_TYPE=Debug",
+        "-DCMAKE_C_COMPILER=clang",
+        "-DCMAKE_CXX_COMPILER=clang++",
+        "--preset",
+        "conan-debug",
+        "-DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake",
+        "&&",
+        "cmake",
+        "--build",
+        "."
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "dependsOn": "conan_install" // Specify that this task depends on "conan_install" task
+    }
+  ]
+}
