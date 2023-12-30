@@ -1,5 +1,6 @@
-#include <string>
+#include <iostream>
 
-int main( ) {
+int main() {
+  std::cout << "built successfully!" << std::endl;
   return 0;
 }

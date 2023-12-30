@@ -4,7 +4,12 @@ cmake_minimum_required(VERSION ${CMAKE_VERSION})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set( PROJECT_NAME "blinker" )
+if(DEFINED ENV{PROJECT_NAME})
+    set(PROJECT_NAME $ENV{PROJECT_NAME})
+else()
+    set(PROJECT_NAME "project-name")
+endif()
+
 set( PROJECT_VERSION 0.1 )
 
 project(
