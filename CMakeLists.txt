@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION ${CMAKE_VERSION})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set( PROJECT_NAME "lockloom" )
+set( PROJECT_NAME "blinker" )
 set( PROJECT_VERSION 0.1 )
 
 project(

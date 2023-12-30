@@ -3,3 +3,6 @@ build/
 .clangd/
 .cache/
 CMakeUserPresets.json
+*.out
+*.exe
+*.so
