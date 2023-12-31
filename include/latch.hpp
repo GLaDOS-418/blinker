@@ -7,20 +7,19 @@
 
 namespace blnkr {
 class Latch {
-  Mutex mtx;
-  Semaphore latch;
-  unsigned int wait_for;
-  unsigned int waiting;
+  Mutex mtx{};
+  Semaphore latch{0};
+  unsigned int wait_for{0};
+  unsigned int arrived{0};
 
 public:
-  explicit Latch(const unsigned int count)
-      : latch{Semaphore{count}}, wait_for{count}, waiting{0} {}
+  explicit Latch(const unsigned int count) : wait_for{count} {}
 
-  inline void wait() noexcept {
+  inline void arrive_and_wait() noexcept {
     {
       std::lock_guard<Mutex> _(mtx);
-      ++waiting;
-      if (waiting == wait_for)
+      ++arrived;
+      if (arrived == wait_for)
         latch.signal(wait_for);
     }
 
