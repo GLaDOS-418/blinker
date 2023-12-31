@@ -4,11 +4,8 @@
 #include "mutex.hpp"
 #include <atomic>
 #include <doctest/doctest.h>
-#include <iostream>
 #include <mutex>
-#include <syncstream>
 #include <thread>
-#include <type_traits>
 
 namespace blnkr {
 
@@ -64,10 +61,14 @@ TEST_CASE("doctest-barrier") {
   std::atomic_int actual = 0;
 
   auto fn = [&expected, &actual, &barrier]() {
-    ++actual;
+    actual.fetch_add(1, std::memory_order_acq_rel);
     barrier.arrive_and_wait();
-    REQUIRE(actual.load(std::memory_order_acquire) == expected);
-    std::osyncstream(std::cout) << actual << std::endl;
+    CHECK(actual.load(std::memory_order_acquire) == expected);
+
+    actual.fetch_add(1, std::memory_order_acq_rel);
+    barrier.arrive_and_wait(); // barrier reuse
+    CHECK(actual.load(std::memory_order_acquire) ==
+          expected * 2); // reuse count
   };
 
   std::jthread j1{fn};
