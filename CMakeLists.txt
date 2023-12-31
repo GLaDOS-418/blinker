@@ -44,6 +44,10 @@ add_library( ${PROJECT_NAME}-lib INTERFACE )
 # ADD INCLUDE FOLDERS
 target_include_directories( ${PROJECT_NAME}-lib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include )
 
+# set up doctest testing
+find_package(doctest REQUIRED)
+target_link_libraries(${PROJECT_NAME}-lib INTERFACE doctest::doctest)
+
 # ADD EXECUTABLE
 add_executable( ${PROJECT_NAME} 
   src/main.cpp

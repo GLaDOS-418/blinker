@@ -1,20 +1,23 @@
 export PROJECT_NAME=blinker
+# export CC=gcc
+# export CXX=g++
 
-.PHONY: build clean rebuild test testprint deps run
+.PHONY: build clean rebuild test testprint package run
 
-build:
-	./project_build.sh
+all: build run
+build: package
+	cd build && cmake ..  -DCMAKE_BUILD_TYPE=Debug  -DCMAKE_C_COMPILER=${CC} -DCMAKE_CXX_COMPILER=${CXX} --preset conan-debug
+	cd build && cmake --build .
 clean:
 	/bin/rm -r build/
 rebuild: clean build
-	echo "rebuilding..."
+	echo "clean + build successfull!"
 test:
 	cd ./build && ctest -C Debug && cd ..
 testprint:
 	cd ./build && ctest --rerun-failed --output-on-failure -C Debug && cd ..
-deps:
-	# export CC=gcc && \
-	# export CXX=g++ && \
+package:
+	mkdir -p build
 	conan install . --output-folder=./build --build=missing --profile default
 
 run: check_project_name check_project_exists

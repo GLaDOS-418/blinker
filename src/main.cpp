@@ -1,6 +1,9 @@
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <doctest/doctest.h>
+
 #include <iostream>
 
-int main() {
-  std::cout << "built successfully!" << std::endl;
-  return 0;
-}
+#include "barrier.hpp"
+#include "latch.hpp"
+
+TEST_CASE("main") { std::cout << "build successfully!\n"; }
