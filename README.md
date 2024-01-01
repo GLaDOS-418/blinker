@@ -9,11 +9,14 @@ This project implements simple semaphore based syncrhonisation constructs from s
 ## Common syncrhonisation Patterns
 
 ### Sempahore
-- `signal()` and `wait()` implemented using atomics.
+- `signal()` and `wait()` implemented using **atomics** instead of delegating it to OS semaphores.
 - aka `counting semaphore`.
+- a `n-way-multiplexer` is `Sempahore{n}`.
 
 ### Mutex
 - `lock()` and `unlock()` are a wrapper over binary semaphore.
+- this is not the same as `std::mutex` as there is no sense of ownerships in semaaphores.
+- but, the interface is the same so, can be used with RAII constructs like `std::lock_guard`.
 - aka `binary semaphore`.
 
 ### Latch
@@ -34,6 +37,7 @@ multiple readers while the writer can simply wait on the `Semaphore` passed to t
 
 ### SharedMutex
 - threads either acquire shared access to the resource via `lock_shared()` or an exclusive access via `lock()`.
+- follows the traits of both `Lockable` and `SharedLockable` so, can be used with both `std::shared_lock` & `std::lock`.
 - aka `reader-writer lock`.
 
 
