@@ -5,7 +5,7 @@
 
 #include "semaphore.hpp"
 
-TEST_CASE("test_name", "test_category") {
+TEST_CASE("testSimpleSemaphore", "semaphore") {
   int shared{0};
   blnkr::Semaphore s{0};
 
