@@ -20,7 +20,7 @@ class Barrier {
   unsigned int arrived{0};
   const unsigned int wait_for{0};
 
-  void phase_one() {
+  inline void phase_one() noexcept {
     {
       std::lock_guard<Mutex> _{mtx};
       ++arrived;
@@ -32,7 +32,7 @@ class Barrier {
     phaseOneB.wait();
   }
 
-  void phase_two() {
+  inline void phase_two() noexcept {
     {
       std::lock_guard<Mutex> _{mtx};
       --arrived;
@@ -46,7 +46,7 @@ class Barrier {
 public:
   explicit Barrier(const size_t _wait_for) : wait_for(_wait_for) {}
 
-  void arrive_and_wait() noexcept {
+  inline void arrive_and_wait() noexcept {
     phase_one();
     phase_two();
   }
