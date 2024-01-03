@@ -4,13 +4,12 @@
 #include "lightswitch.hpp"
 #include "semaphore.hpp"
 
-// this implementation prioritises exclusive-access over shared-access.
-// for example, in a R-W situtation, if the writes are critical & stale data is
-// not acceptable, this should be preferred. As long as there's a write waiting
-// to get 'exclusiveAccess', no read can gain access to the resource.
-// NOTE: Check out 'SharedMutex' & 'FairShairedMutex' for better understanding
-
 namespace blnkr {
+
+// this implementation prioritises 'writer' over 'reader'.
+// once the 'writer' acquires the 'exclusiveSwitch', no reader can
+// gain access to the resource as long as there's AT LEAST one 'writer'.
+
 class ExclusiveCriticalMutex {
   Semaphore exclusiveAccess{1};
   Semaphore sharedAccess{1};

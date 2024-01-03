@@ -6,17 +6,12 @@
 
 namespace blnkr {
 
-// As long as there's an exclusive-access thread in the 'room', the
-// exclusive-access thread will not be able to gain access to the resource and
-// might lead to 'Starvation'. example: this can be used as a reader writer lock
-// and as long as there's a reader, writer can't gain  access. which could be
-// the expected behaviour in case when there're too many reads and too few
-// writes and reading 'stale' data is acceptable.
-//
-// NOTE: 'FairSharedMutex' be used for fair contention amongs shared & exclusive
-// threads OR
-//       'ExclusiveCriticalMutex' can be used if exclusive-access threads are to
-//       be given priority.
+// reader=shared-access thread, writer=exclusive-access thread
+// As long as there's at least one 'reader' accessing the resource, the
+// 'writer' will not be able to gain access to the resource and this
+// might lead to the 'Starvation' of 'writer' thread.
+// NOTE: check 'FairSharedMutex' for no-starve shared-mutex and
+//       'ExclusiveCriticalMutex' for write-critical shared-mutex
 
 class SharedMutex {
   Semaphore exclusiveAccess{1};

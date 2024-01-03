@@ -5,13 +5,12 @@
 #include "semaphore.hpp"
 
 namespace blnkr {
-// This is more fair than 'blnkr::SharedMutex' because once the exclusive-access
-// starts waiting at 'shared', no more shared-access thread can get access of
-// the 'exclusive' resource. This makes the algorithm Starvation Free. It's fair
-// because both the exclusive-access & shared-access thread compete fairly when
-// grabbing the 'shared' token.
-//
-// NOTE: if exlusive-access is more critical, you might want to use 'ExclusiveCriticalMutex'
+
+// reader=shared-access thread, writer=exclusive-access thread
+// This is more fair than 'SharedMutex' because once the 'writer'
+// starts waiting to gain exlusive-access, no more 'reader' can gain access of
+// the resource. This makes the algorithm 'Starvation' Free as it guarantees
+// both the 'writer' & the 'reader' threads to compete for the resource.
 
 class FairSharedMutex {
 
